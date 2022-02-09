@@ -109,9 +109,9 @@ function displayVideo (video, i) {
   $("#video-" + i).attr("src", "https://www.youtube.com/embed/" + video)
 }
 
-// function to save recents, (maybe keep 5 recent results?)
-function save () {
-
+// function to save recents, keeping 3 total replacing the oldest
+$("#save-btn").click(function () {
+  console.log("the results are saved!");
   let savedResults = {
     "books" : booksToDisplay,
     "videos" : videosToDisplay
@@ -128,7 +128,7 @@ function save () {
     localStorage.setItem("previousResources", JSON.stringify(savedResources))
     // console.log(savedResources);
   };
-}
+});
 
 function loadSavedResources () {
   // console.log(savedResources);
