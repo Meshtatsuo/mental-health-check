@@ -4,14 +4,14 @@
 
 
 // funciton to bring in/parse quiz results will eventually test with full array ["depression", "sch", "ptsd", "addiction"];
-let quizResults = ["anxiety"];
+let quizResults = ["depression"];
 let videosToDisplay = [];
 let booksToDisplay = [];
 let savedResources = [];
 
 // function to translate into api searches
 // figure out better search terms
-async function getApiQueries (results) {
+function getApiQueries (results) {
   // console.log(results);
   fetchBooks (results);
   if (results == "depression") {
@@ -20,11 +20,11 @@ async function getApiQueries (results) {
   }
   else if (results == "anxiety") {
     // console.log("The result was positive for anxiety")
-    // fetchVideos ("meditation");
+    fetchVideos ("meditation");
   }
   else if (results == "ptsd") {
     // console.log("The result was positive for ptsd")
-    // fetchVideos ("meditation");
+    fetchVideos ("meditation");
   }
   else if (results == "sch") {
     // console.log("The result was positive for sch")
@@ -32,7 +32,7 @@ async function getApiQueries (results) {
   }
   else if (results == "addiction") {
     // console.log("The result was positive for addiction")
-    // fetchVideos ("addiction talks maybe?");
+    fetchVideos ("addiction");
   }
   else {
     // console.log("Negative for symptoms on all checked counts")
