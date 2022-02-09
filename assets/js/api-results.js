@@ -4,7 +4,7 @@
 
 
 // funciton to bring in/parse quiz results will eventually test with full array ["depression", "sch", "ptsd", "addiction"];
-let quizResults = ["depression"];
+let quizResults = ["anxiety"];
 let videosToDisplay = [];
 let booksToDisplay = [];
 let savedResources = [];
@@ -16,7 +16,7 @@ async function getApiQueries (results) {
   fetchBooks (results);
   if (results == "depression") {
     // console.log("The result was positive for depression")
-    // fetchVideos ("funnyanimals");
+    fetchVideos ("dogs");
   }
   else if (results == "anxiety") {
     // console.log("The result was positive for anxiety")
