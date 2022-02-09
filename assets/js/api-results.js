@@ -2,42 +2,97 @@
 // and use our api's to generate in the moment youtube vidoes
 // and out of the moment book recommendations from google books
 
-
-// funciton to bring in/parse quiz results will eventually test with full array ["depression", "sch", "ptsd", "addiction"];
-let quizResults = ["depression"];
 let videosToDisplay = [];
 let booksToDisplay = [];
+let fetchedBooks = [];
 let savedResources = [];
-
+let quizResults = [];
+// grabbing querystring
+let queryString = document.location.search;
+let quizResultArray = queryString.split("&");
+for ( i = 0; i < quizResultArray.length; i++ ) {
+  let stringParse = quizResultArray[i].split("=");
+  // console.log(stringParse);
+  if (stringParse[1] == "true") {
+    // console.log("tested has symptoms of " + stringParse[0]);
+    quizResults.push(stringParse[0]);
+  }
+  else if (stringParse[1] == "false") {
+    // console.log("tested does not have symptoms of " + stringParse[0]);
+  }
+}
+console.log(quizResults)
 // function to translate into api searches
 // figure out better search terms
 function getApiQueries (results) {
   // console.log(results);
-  fetchBooks (results);
-  if (results == "depression") {
+  let bookSearchArray = [];
+  let videoSearchArray = [];
+
+  // fetchBooks (results);
+  if (results.includes("?depression")) {
     // console.log("The result was positive for depression")
-    fetchVideos ("dogs");
+    // videoSearchArray.push("dogs");
+    bookSearchArray.push("depression")
   }
-  else if (results == "anxiety") {
+  if (results.includes("anx")) {
     // console.log("The result was positive for anxiety")
-    fetchVideos ("meditation");
+    // videoSearchArray.push("meditation");
+    bookSearchArray.push("anxiety")
   }
-  else if (results == "ptsd") {
+  if (results.includes("ptsd")) {
     // console.log("The result was positive for ptsd")
-    fetchVideos ("meditation");
+    // videoSearchArray.push("meditation");
+    bookSearchArray.push("ptsd")
   }
-  else if (results == "sch") {
+  if (results.includes("sch")) {
     // console.log("The result was positive for sch")
-    // fetchVideos ("dogs");
+    // videoSearchArray.push("dogs");
+    bookSearchArray.push("schizophrenia")
   }
-  else if (results == "addiction") {
+  if (results.includes("add")) {
     // console.log("The result was positive for addiction")
-    fetchVideos ("addiction");
+    // videoSearchArray.push("addiction");
+    bookSearchArray.push("addiction")
   }
-  else {
-    // console.log("Negative for symptoms on all checked counts")
-    // don't fetch, just push the congratulations video
+  // not single choice, will need to check for empty array
+  // else {
+  //   // console.log("Negative for symptoms on all checked counts")
+  //   // don't fetch, just push the congratulations video
+  // };
+  
+  fetchData(bookSearchArray);
+};
+
+const fetchData = function (books) {
+  const promises = [];
+
+  for (let i = 0; i < books.length; i++ ){
+    promises.push(fetchBooks(books[i]));
   }
+
+  console.log(promises);
+  Promise.all(promises)
+  .then(() => {
+    // debugger;
+    console.log(fetchedBooks);
+    for ( i = 0; i < 3; i++ ){
+      let a = Math.floor(Math.random() * fetchedBooks.length);
+      let book = fetchedBooks[a];
+      // console.log(book)
+      // to check for duplicates
+      if (booksToDisplay.includes(book)) {
+        i--
+      }
+      else {
+        booksToDisplay.push(book);
+        displayBook(book, i);
+      };
+    }
+  })
+  .catch((e) => {
+    console.log("there was an issues somewhere", e);
+  });
 };
 
 // function for youtube api fetch
@@ -71,6 +126,7 @@ async function fetchVideos (searchTerm) {
 
 // function for google books api fetch
 async function fetchBooks (searchTerm) {
+  // debugger;
   // currently grabs a lot of academic books, want to get rid of those eventually I think
   fetch("https://www.googleapis.com/books/v1/volumes?q=" + searchTerm)
     .then(function (result) {
@@ -83,18 +139,19 @@ async function fetchBooks (searchTerm) {
         let book = result.items[a].volumeInfo;
 
         // to check for duplicates
-        if (booksToDisplay.includes(book)) {
+        if (fetchedBooks.includes(book)) {
           i--
         }
         else {
-          booksToDisplay.push(book);
-          displayBook(book, i);
+          fetchedBooks.push(book);
+          // displayBook(book, i);
         };
       };
     }).catch(function(error) {
       // logs error if a problem occurs
       console.log(error);
     });
+  return fetchedBooks;
 };
 
 // functions for printing content to screen
