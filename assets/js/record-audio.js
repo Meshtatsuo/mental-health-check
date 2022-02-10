@@ -203,20 +203,20 @@ function startRecorder() {
             reader.readAsDataURL(blob);
             saveClipNames(clipName);
             event.stopPropagation();
-            location.reload(); // add here to prevent multiple saved files
+            location.reload(); // add here to prevent multiple saved
           };
         });
 
         // moved here, it was not defined
-        clipLabel.onclick = function () {
-          const existingName = clipLabel.textContent;
-          const newClipName = prompt("Enter a new name for your sound clip?");
-          if (newClipName === null) {
-            clipLabel.textContent = existingName;
-          } else {
-            clipLabel.textContent = newClipName;
-          }
-        };
+        // clipLabel.onclick = function () {
+        //   const existingName = clipLabel.textContent;
+        //   const newClipName = prompt("Enter a new name for your sound clip?");
+        //   if (newClipName === null) {
+        //     clipLabel.textContent = existingName;
+        //   } else {
+        //     clipLabel.textContent = newClipName;
+        //   }
+        // };
       };
 
       mediaRecorder.ondataavailable = function (e) {
@@ -328,15 +328,15 @@ function loadAudioFiles() {
         saveClipNames(clipNames[i]);
       };
 
-      clipLabel.onclick = function () {
-        const existingName = clipLabel.textContent;
-        const newClipName = prompt("Enter a new name for your sound clip?");
-        if (newClipName === null) {
-          clipLabel.textContent = existingName;
-        } else {
-          clipLabel.textContent = newClipName;
-        }
-      };
+      // clipLabel.onclick = function () {
+      //   const existingName = clipLabel.textContent;
+      //   const newClipName = prompt("Enter a new name for your sound clip?");
+      //   if (newClipName === null) {
+      //     clipLabel.textContent = existingName;
+      //   } else {
+      //     clipLabel.textContent = newClipName;
+      //   }
+      // };
     }
   }
 }
